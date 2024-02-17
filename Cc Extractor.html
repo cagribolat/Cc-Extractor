@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cc Extractor</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/encoding/0.1.12/encoding.min.js"></script>
 </head>
 <body>
     <h1>Cc Extractor</h1>
@@ -31,8 +30,11 @@
 
             reader.onload = function(event) {
                 var content = event.target.result;
-                var encoding = Encoding.detect(content); // Karakter kodlamasını belirle
-                var decodedContent = Encoding.convert(content, 'UTF-8', encoding); // UTF-8'e dönüştür
+
+                // Dosyanın karakter kodlamasını belirle
+                var decoder = new TextDecoder('ISO-8859-9'); // ISO-8859-9 (Latin-5) Türkçe karakterler için kullanılıyor
+                var decodedContent = decoder.decode(content);
+
                 var processedContent = processAndSaveSrt(decodedContent);
                 srtContent.value = processedContent;
             };
