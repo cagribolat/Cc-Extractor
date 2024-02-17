@@ -32,10 +32,9 @@
                 var content = event.target.result;
                 var processedContent = processAndSaveSrt(content);
                 srtContent.value = processedContent;
-                window.location.reload(); // Reload the page after processing
             };
 
-            reader.readAsText(file);
+            reader.readAsText(file, 'ISO-8859-9'); // Türkçe karakterler için ISO-8859-9 karakter kodlamasını kullanıyoruz
         }
 
         function processAndSaveSrt(srtContent) {
