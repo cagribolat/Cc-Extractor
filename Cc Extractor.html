@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cc Extractor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/encoding/0.1.12/encoding.min.js"></script>
 </head>
 <body>
     <h1>Cc Extractor</h1>
@@ -26,15 +27,17 @@
             }
 
             var file = fileInput.files[0];
+            var reader = new FileReader();
 
-            // Dosyayı okumak için fetch API'sini kullanıyoruz
-            fetch(file)
-                .then(response => response.text())
-                .then(content => {
-                    var processedContent = processAndSaveSrt(content);
-                    srtContent.value = processedContent;
-                })
-                .catch(error => console.error('Error reading file:', error));
+            reader.onload = function(event) {
+                var content = event.target.result;
+                var encoding = Encoding.detect(content); // Karakter kodlamasını belirle
+                var decodedContent = Encoding.convert(content, 'UTF-8', encoding); // UTF-8'e dönüştür
+                var processedContent = processAndSaveSrt(decodedContent);
+                srtContent.value = processedContent;
+            };
+
+            reader.readAsArrayBuffer(file);
         }
 
         function processAndSaveSrt(srtContent) {
