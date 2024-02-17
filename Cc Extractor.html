@@ -26,15 +26,15 @@
             }
 
             var file = fileInput.files[0];
-            var reader = new FileReader();
 
-            reader.onload = function(event) {
-                var content = event.target.result;
-                var processedContent = processAndSaveSrt(content);
-                srtContent.value = processedContent;
-            };
-
-            reader.readAsText(file, 'ISO-8859-9'); // Türkçe karakterler için ISO-8859-9 karakter kodlamasını kullanıyoruz
+            // Dosyayı okumak için fetch API'sini kullanıyoruz
+            fetch(file)
+                .then(response => response.text())
+                .then(content => {
+                    var processedContent = processAndSaveSrt(content);
+                    srtContent.value = processedContent;
+                })
+                .catch(error => console.error('Error reading file:', error));
         }
 
         function processAndSaveSrt(srtContent) {
